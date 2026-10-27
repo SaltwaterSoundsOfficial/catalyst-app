@@ -1,0 +1,4 @@
+/* Website demo tweaks: no window buttons, no sideways scroll. */
+#titlebar { display: none !important; }
+html, body { overflow: hidden; }
+body.fx-rest *, .fx-rest * { animation-play-state: running !important; }

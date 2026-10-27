@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: file: https://avatars.steamstatic.com https://*.steamstatic.com; media-src 'self' file: blob: mediastream:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self'; connect-src 'self' ws://127.0.0.1:* ws://localhost:*">
+<title>Catalyst demo</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="vibes.css">
+<link rel="stylesheet" href="demo.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+<div id="fx" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="fx-top" aria-hidden="true"></div>
+
+<div id="titlebar">
+  <button type="button" data-win="fullscreen" aria-label="Full screen" title="Full screen (F11)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 4V1h3M11 4V1H8M1 8v3h3M11 8v3H8"/></svg></button>
+  <button type="button" data-win="min" aria-label="Minimize"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 6h10"/></svg></button>
+  <button type="button" data-win="max" aria-label="Maximize"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="1.5" width="9" height="9"/></svg></button>
+  <button type="button" data-win="close" class="close" aria-label="Close to tray"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1.5 1.5l9 9M10.5 1.5l-9 9"/></svg></button>
+</div>
+
+<div id="app">
+  <nav id="nav" aria-label="Sections">
+    <div class="logo">CATALYST<b>.</b></div>
+    <div class="tagline">CONTROL ROOM</div>
+    <div class="navlist" id="navlist"></div>
+    <div class="navfoot">
+      <div id="update-banner"></div>
+      <div class="sys" id="navsys"></div>
+      <div class="navrow">
+        <button type="button" class="chip" id="btn-gamemode">GAME MODE</button>
+        <button type="button" class="chip" id="btn-settings">SETTINGS</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header id="header">
+      <h1 id="title">HOME</h1>
+      <button type="button" class="search" id="open-search">
+        <span class="slash">/</span><span class="ph">search or type a command</span><span class="kbd">CTRL+SPACE</span>
+      </button>
+    </header>
+    <div id="content"></div>
+    <footer id="player" aria-label="Now playing">
+      <div class="art" id="np-art">C</div>
+      <div class="meta"><div class="t" id="np-title">NOTHING PLAYING</div><div class="a" id="np-artist">PLAY SOMETHING</div><button type="button" class="np-switch" id="np-switch" hidden>2 PLAYING</button></div>
+      <div id="wave" class="idle" aria-hidden="true"></div>
+      <div class="ctrls">
+        <button type="button" data-media="prev" aria-label="Previous track">|&lt;</button>
+        <button type="button" data-media="toggle" class="main" aria-label="Play or pause" id="np-toggle">||</button>
+        <button type="button" data-media="next" aria-label="Next track">&gt;|</button>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<div id="palette" role="dialog" aria-modal="true" aria-label="Command bar">
+  <div class="pal">
+    <label class="pal-in"><span class="slash">/</span><span class="sr">Search or command</span><input id="pal-input" type="text" autocomplete="off" spellcheck="false" placeholder="search, or try: close discord"></label>
+    <div class="pal-res" id="pal-res" role="listbox"></div>
+    <div class="pal-foot"><span>ENTER OPEN</span><span id="pal-hint" class="hint"></span><span>↑↓ MOVE</span><span>ESC CLOSE</span><span>CLOSE · OPEN · RESTART · G · YT · NOTE · FOCUS · 5 KM TO MI</span></div>
+  </div>
+</div>
+
+<div id="menu" role="menu"></div>
+<div id="modal"></div>
+<div id="ws-run"></div>
+<div id="toast" aria-live="polite"></div>
+<div id="drop-overlay"><b>DROP IT.</b><span>FILES GO TO YOUR DROP ZONE FOLDERS</span></div>
+<div id="tour" role="dialog" aria-modal="true" aria-label="Welcome tour"></div>
+
+<div id="splash" aria-hidden="true">
+  <h1>CATALYST<b>.</b></h1>
+  <div class="log" id="splash-log"></div>
+  <div>
+    <div class="load"><i></i></div>
+    <div class="foot" style="margin-top:10px"><span>CONTROL ROOM</span><span>LOADING<span class="blink">_</span></span></div>
+  </div>
+</div>
+
+<script src="qr.js"></script>
+<script src="mock.js"></script>
+<script src="util.js"></script>
+<script src="patch.js"></script>
+<script src="commands.js"></script>
+<script src="views.js"></script>
+<script src="v5.js"></script>
+<script src="v6.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
