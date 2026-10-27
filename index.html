@@ -10,23 +10,30 @@
 <meta property="og:image" content="https://saltwatersoundsofficial.github.io/catalyst-app/shots/home.jpg">
 <link rel="icon" href="media/icon.png">
 <style>
+/* Layout concept: a scroll story. Chaos collapses into one window, then the page travels through the five Vibes. */
 @font-face { font-family: 'AB'; src: url('media/ArchivoBlack-Regular.ttf'); font-display: swap; }
 @font-face { font-family: 'SM'; src: url('media/SpaceMono-Regular.ttf'); font-display: swap; }
 @font-face { font-family: 'SM'; src: url('media/SpaceMono-Bold.ttf'); font-weight: 700; font-display: swap; }
-:root { --bg: #0b0b0b; --bg2: #141414; --bg3: #1c1c1c; --fg: #ededed; --fg2: #c9c9c9; --mute: #8d8d8d; --line: #262626; --acc: #ff5a1f; --on-acc: #0b0b0b; --nav: rgba(11,11,11,.85); --head: 'AB', 'Arial Black', sans-serif; --r: 0px; }
+:root {
+  --bg: #0b0b0b; --bg2: #141414; --bg3: #1c1c1c; --fg: #ededed; --fg2: #c9c9c9; --mute: #8d8d8d; --line: #262626;
+  --acc: #ff5a1f; --on-acc: #0b0b0b; --nav: rgba(11,11,11,.82); --glow: rgba(255,90,31,.35);
+  --head: 'AB', 'Arial Black', sans-serif; --mono: 'SM', ui-monospace, Consolas, monospace; --r: 0px;
+  color-scheme: dark;
+}
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); transition: background .4s, color .4s; color: var(--fg); font: 16px/1.6 'SM', ui-monospace, Consolas, monospace; overflow-x: hidden; }
-body::before { content: ''; position: fixed; inset: -50%; z-index: 100; pointer-events: none; opacity: .06; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1s steps(4) infinite; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 var(--mono); overflow-x: hidden; transition: background .5s, color .5s; }
+body::before { content: ''; position: fixed; inset: -50%; z-index: 100; pointer-events: none; opacity: .055; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1s steps(4) infinite; }
 @keyframes grain { 0% { transform: translate(0,0) } 25% { transform: translate(-3%,2%) } 50% { transform: translate(2%,-3%) } 75% { transform: translate(-2%,-1%) } }
 a { color: inherit; }
 .wrap { width: min(1180px, 100% - 32px); margin: 0 auto; }
-h1, h2, h3, .big { font-family: var(--head); font-weight: 400; letter-spacing: -.02em; line-height: .95; margin: 0; }
+h1, h2, h3, .big { font-family: var(--head); font-weight: 400; letter-spacing: -.02em; line-height: .92; margin: 0; text-wrap: balance; }
 .k { font-size: 12px; letter-spacing: .28em; color: var(--mute); text-transform: uppercase; }
 .acc { color: var(--acc); }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
 
 /* nav */
-nav { position: sticky; top: 0; z-index: 50; background: var(--nav); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background: var(--nav); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); transition: background .5s; }
 nav .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
 .logo { font-family: var(--head); font-size: 24px; text-decoration: none; }
 .logo b { color: var(--acc); }
@@ -35,65 +42,158 @@ nav .links a { text-decoration: none; color: var(--mute); }
 nav .links a:hover { color: var(--fg); }
 
 /* buttons */
-.btn { border-radius: var(--r); display: inline-flex; align-items: center; gap: 10px; padding: 16px 22px; border: 2px solid var(--fg); background: var(--fg); color: var(--bg); font: 700 14px 'SM', monospace; letter-spacing: .16em; text-decoration: none; text-transform: uppercase; transition: transform .15s, box-shadow .15s; cursor: pointer; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 22px; border: 2px solid var(--fg); border-radius: var(--r); background: var(--fg); color: var(--bg); font: 700 14px var(--mono); letter-spacing: .16em; text-decoration: none; text-transform: uppercase; transition: transform .15s, box-shadow .15s; cursor: pointer; }
 .btn:hover, .btn:focus-visible { transform: translate(-3px,-3px); box-shadow: 6px 6px 0 var(--acc); }
 .btn.acc { background: var(--acc); border-color: var(--acc); color: var(--on-acc); }
 .btn.acc:hover { box-shadow: 6px 6px 0 var(--fg); }
 .btn.ghost { background: transparent; color: var(--fg); }
-.btn small { font-weight: 400; letter-spacing: .08em; opacity: .7; }
+.tag { display: inline-block; font: 700 10px var(--mono); letter-spacing: .16em; padding: 3px 7px; background: var(--acc); color: var(--on-acc); vertical-align: middle; border-radius: calc(var(--r) / 3); }
 
-/* hero */
-.hero { padding: 56px 0 40px; }
-.hero-top { display: grid; grid-template-columns: 1.2fr .8fr; gap: 56px; align-items: center; }
-.hero h1 { font-size: clamp(56px, 7.4vw, 112px); }
-.hero h1 b { color: var(--acc); }
-.hero p.lead { font-size: 18px; max-width: 560px; color: var(--fg2); margin: 26px 0 30px; }
-.hero .cta { display: flex; gap: 14px; flex-wrap: wrap; }
-.hero .meta { margin-top: 18px; font-size: 13px; color: var(--mute); }
-.phone { position: relative; justify-self: center; width: min(340px, 100%); aspect-ratio: 9/16; border: 2px solid var(--fg); box-shadow: 12px 12px 0 var(--acc); background: #000; }
-.phone video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.phone button { position: absolute; right: 10px; bottom: 10px; border: 0; background: rgba(0,0,0,.7); color: #fff; font: 700 11px 'SM'; letter-spacing: .14em; padding: 8px 10px; cursor: pointer; }
+/* ---------- boot intro ---------- */
+#boot { position: fixed; inset: 0; z-index: 200; background: #050505; color: #ededed; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; cursor: pointer; transition: opacity .5s, visibility .5s; }
+#boot.out { opacity: 0; visibility: hidden; }
+#boot h2 { font-size: clamp(64px, 14vw, 200px); animation: slam .9s cubic-bezier(.2,.9,.2,1) both, shake .25s .5s linear both; }
+#boot h2 b { color: #ff5a1f; }
+#boot .log { width: min(460px, 86vw); font-size: 13px; letter-spacing: .18em; color: #8d8d8d; display: flex; flex-direction: column; gap: 6px; }
+#boot .log span { white-space: nowrap; overflow: hidden; width: 0; animation: type .35s steps(24) forwards; }
+#boot .log span:nth-child(1) { animation-delay: .55s } #boot .log span:nth-child(2) { animation-delay: .75s } #boot .log span:nth-child(3) { animation-delay: .95s } #boot .log span:nth-child(4) { animation-delay: 1.15s; color: #ff5a1f }
+#boot .bar { width: min(460px, 86vw); height: 3px; background: #1f1f1f; } #boot .bar i { display: block; height: 100%; width: 0; background: #ff5a1f; animation: fill 1.4s .2s cubic-bezier(.6,0,.2,1) forwards; }
+@keyframes slam { 0% { transform: scale(3); opacity: 0; filter: blur(14px) } 60% { opacity: 1 } 100% { transform: scale(1); filter: blur(0) } }
+@keyframes shake { 0%,100% { transform: translate(0,0) } 25% { transform: translate(-6px,3px) } 50% { transform: translate(5px,-4px) } 75% { transform: translate(-3px,-2px) } }
+@keyframes type { to { width: 100% } } @keyframes fill { to { width: 100% } }
+
+/* ---------- hero: chaos to one screen ---------- */
+.story { position: relative; height: 330vh; }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.stage-bg { position: absolute; inset: 0; background: radial-gradient(900px 600px at 50% 60%, var(--glow), transparent 70%); opacity: 0; }
+.chaos { position: absolute; inset: 0; }
+.ch { position: absolute; left: 0; top: 0; will-change: transform, opacity; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 92px; font-size: 11px; letter-spacing: .02em; color: #d9d9d9; text-align: center; text-shadow: 0 1px 2px #000; }
+.ch .ic { width: 48px; height: 48px; border-radius: 10px; display: grid; place-items: center; font: 700 15px var(--mono); color: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.5); }
+.ch.win { width: 260px; height: 170px; display: block; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; box-shadow: 0 18px 40px rgba(0,0,0,.6); text-align: left; overflow: hidden; }
+.ch.win .tb { height: 26px; background: #262626; display: flex; align-items: center; gap: 6px; padding: 0 10px; font-size: 11px; color: #bbb; }
+.ch.win .tb i { margin-left: auto; letter-spacing: 6px; font-style: normal; color: #888; }
+.ch.win .bd { padding: 12px; display: flex; flex-direction: column; gap: 7px; }
+.ch.win .bd span { display: block; height: 8px; border-radius: 4px; background: #2e2e2e; }
+.ch.win .bd span:nth-child(2) { width: 70%; } .ch.win .bd span:nth-child(3) { width: 85%; } .ch.win .bd span:nth-child(4) { width: 40%; }
+.ch.note { width: 170px; padding: 10px 12px; background: #ffe066; color: #222; font-size: 12px; text-align: left; text-shadow: none; transform-origin: center; box-shadow: 0 10px 24px rgba(0,0,0,.5); border-radius: 2px; }
+.ch.err { width: 250px; padding: 12px 14px; background: #1c1c1c; border: 1px solid #555; border-left: 4px solid #e81123; text-align: left; font-size: 12px; color: #eee; border-radius: 4px; }
+.ch.err b { display: block; font-size: 12px; margin-bottom: 4px; }
+.lines { position: absolute; left: 0; right: 0; text-align: center; padding: 0 16px; pointer-events: none; }
+.line-a { top: 50%; transform: translateY(-50%); }
+.line-a h1 { font-size: clamp(54px, 10vw, 150px); text-shadow: 0 4px 30px rgba(0,0,0,.8); }
+.line-a h1 b { color: var(--acc); }
+.line-a p { margin: 18px auto 0; font-size: 14px; letter-spacing: .3em; color: var(--fg2); text-transform: uppercase; }
+.line-b { top: 84px; }
+.line-b h2 { font-size: clamp(30px, 4.6vw, 64px); }
+.line-b h2 b { color: var(--acc); }
+.scrollcue { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); font-size: 12px; letter-spacing: .3em; color: var(--mute); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.scrollcue i { width: 2px; height: 34px; background: linear-gradient(var(--acc), transparent); animation: cue 1.4s ease-in-out infinite; }
+@keyframes cue { 0% { transform: scaleY(0); transform-origin: top } 50% { transform: scaleY(1); transform-origin: top } 51% { transform-origin: bottom } 100% { transform: scaleY(0); transform-origin: bottom } }
+.cwin { position: absolute; left: 50%; top: 56%; width: var(--ww); transform: translate(-50%, -50%) scale(.2); opacity: 0; will-change: transform, opacity; }
+.cwin-in { border: 2px solid var(--fg); border-radius: var(--r); background: #000; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.04), 16px 16px 0 var(--acc), 0 40px 120px var(--glow); transition: box-shadow .5s, border-color .5s; }
+.cbar { display: flex; align-items: center; gap: 14px; padding: 9px 14px; background: var(--bg2); border-bottom: 1px solid var(--line); font-size: 11px; letter-spacing: .16em; color: var(--mute); }
+.cbar b { color: var(--fg); }
+.cbar .live { color: var(--acc); }
+.cbar .vibe-dots { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.vibe-dots button { width: 18px; height: 18px; border-radius: 50%; border: 2px solid transparent; padding: 0; cursor: pointer; transition: transform .15s; }
+.vibe-dots button:hover { transform: scale(1.2); }
+.vibe-dots button.on { border-color: var(--fg); transform: scale(1.15); }
+.frame { position: relative; width: 100%; overflow: hidden; background: #0d0d0d; }
+.frame iframe { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; }
+.frame .load { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12px; letter-spacing: .24em; color: var(--mute); }
+.frame img.mob { display: none; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.under { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; padding: 0 16px; opacity: 0; transition: opacity .3s; }
+.under .btn { padding: 12px 18px; font-size: 12px; }
+.under .hint { align-self: center; font-size: 12px; color: var(--mute); letter-spacing: .08em; }
 
 /* marquee */
-.marq { border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap; padding: 16px 0; margin-top: 30px; }
+.marq { border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap; padding: 16px 0; }
 .marq div { display: inline-block; animation: marq 40s linear infinite; font-family: var(--head); font-size: 28px; color: var(--mute); }
 .marq span { margin-right: 40px; } .marq span:nth-child(3n) { color: var(--acc); }
 @keyframes marq { to { transform: translateX(-50%); } }
 
 /* sections */
-section { padding: 96px 0; }
-.head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-.head h2 { font-size: clamp(44px, 6vw, 84px); }
-.head p { max-width: 420px; color: var(--fg2); margin: 0; }
-.feat { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; padding: 48px 0; border-top: 1px solid var(--line); }
+section { padding: 110px 0; position: relative; }
+.head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 44px; flex-wrap: wrap; }
+.head h2 { font-size: clamp(44px, 6.4vw, 92px); }
+.head p { max-width: 430px; color: var(--fg2); margin: 0; }
+
+/* who's it for */
+.who-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.who-grid button { all: unset; box-sizing: border-box; cursor: pointer; padding: 26px 22px; min-height: 190px; border: 2px solid var(--line); border-radius: var(--r); background: var(--bg2); display: flex; flex-direction: column; justify-content: space-between; gap: 16px; transition: transform .18s, border-color .18s, background .18s; }
+.who-grid button:hover { transform: translate(-3px,-3px); border-color: var(--fg2); }
+.who-grid button.on { border-color: var(--acc); background: color-mix(in srgb, var(--acc) 12%, var(--bg2)); }
+.who-grid b { font-family: var(--head); font-weight: 400; font-size: 30px; line-height: .95; color: var(--fg); }
+.who-grid button.on b { color: var(--acc); }
+.who-grid span { font-size: 13px; color: var(--fg2); }
+.who-grid i { font-style: normal; font-size: 12px; letter-spacing: .2em; color: var(--mute); }
+.who-say { margin-top: 18px; min-height: 26px; color: var(--fg2); font-size: 14px; }
+
+/* ---------- Vibe zones: the page travels through every Vibe ---------- */
+.zone { --zbg: var(--bg); padding: 0; background: var(--zbg); color: var(--fg); overflow: hidden; }
+.zone-in { padding: 40px 0 90px; position: relative; z-index: 1; }
+.zone-tag { display: flex; align-items: center; gap: 18px; padding: 70px 0 30px; position: relative; z-index: 1; }
+.zone-tag > span { font-size: 12px; letter-spacing: .3em; color: var(--mute); }
+.zone-tag h2 { font-size: clamp(56px, 11vw, 170px); line-height: .85; }
+.zone-tag .sw { flex: 1; height: 2px; background: linear-gradient(90deg, var(--acc), transparent); transform-origin: left; }
+.feat { display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line); }
 .feat:nth-of-type(even) .shot { order: -1; }
-.feat h3 { font-size: clamp(32px, 4vw, 52px); margin: 10px 0 16px; }
+.feat .k { color: var(--acc); }
+.feat.picked .k::after { content: '  ★ FOR YOU'; color: var(--fg); }
+.feat h3 { font-size: clamp(34px, 4.2vw, 58px); margin: 12px 0 16px; }
 .feat p { color: var(--fg2); margin: 0 0 14px; }
 .feat ul { margin: 0; padding: 0; list-style: none; font-size: 14px; color: var(--fg2); }
 .feat li { padding: 8px 0; border-bottom: 1px solid var(--line); }
 .feat li::before { content: '→ '; color: var(--acc); }
-.shot { overflow: hidden; border-radius: var(--r); border: 2px solid var(--fg); box-shadow: 10px 10px 0 var(--acc); background: #000; }
+.shot { border: 2px solid var(--fg); border-radius: var(--r); box-shadow: 12px 12px 0 var(--acc); background: #000; overflow: hidden; transition: transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .3s; }
 .shot img { display: block; width: 100%; height: auto; }
-.tag { display: inline-block; font: 700 10px 'SM'; letter-spacing: .16em; padding: 3px 7px; background: var(--acc); color: var(--on-acc); vertical-align: middle; }
+.feat:hover .shot { transform: translate(-4px,-4px) rotate(-.4deg); }
+/* reveal: content is visible by default; JS only adds the entrance for things below the fold */
+.rv { transition: transform .9s cubic-bezier(.2,.9,.2,1), opacity .9s, clip-path 1s cubic-bezier(.7,0,.2,1); }
+.js .rv.pre { opacity: 0; transform: translateY(46px); }
+.js .shot.pre { clip-path: inset(0 0 100% 0); transform: none; opacity: 1; }
 
-/* vibes */
-.vibes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.vibes figure { margin: 0; border: 1px solid var(--line); background: var(--bg2); }
-.vibes img { display: block; width: 100%; height: auto; }
-.vibes figcaption { display: flex; justify-content: space-between; padding: 12px 14px; font-size: 13px; letter-spacing: .14em; }
+.z-studio { --zbg: #0b0b0b; }
+.z-midnight { --bg: #07080d; --zbg: #07080d; --bg2: rgba(255,255,255,.05); --fg: #e8eaf2; --fg2: #b4b9cb; --mute: #9aa0b4; --line: rgba(255,255,255,.1); --acc: #8b7bff; --on-acc: #07080d; --head: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; --r: 18px; }
+.z-midnight .zone-in::before, .z-midnight .zone-tag::before { content: ''; position: absolute; inset: -20% -10%; z-index: -1; background: radial-gradient(600px 400px at 15% 20%, rgba(91,75,209,.5), transparent 60%), radial-gradient(500px 400px at 90% 70%, rgba(139,123,255,.25), transparent 60%); filter: blur(10px); animation: drift 14s ease-in-out infinite alternate; }
+.z-midnight h2, .z-midnight h3 { font-weight: 700; letter-spacing: -.035em; }
+.z-midnight .shot { border-color: rgba(255,255,255,.16); box-shadow: 0 30px 90px rgba(91,75,209,.45); }
+.z-midnight .feat > div:first-child { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 28px; backdrop-filter: blur(14px); }
+@keyframes drift { to { transform: translate(4%, -3%) scale(1.08); } }
+.z-terminal { --bg: #010402; --zbg: #010402; --bg2: #041008; --fg: #3dff6a; --fg2: #2fd458; --mute: #1f9a3f; --line: #0f3d1c; --acc: #b6ffc6; --on-acc: #010402; --head: 'SM', Consolas, monospace; }
+.z-terminal { text-shadow: 0 0 6px rgba(61,255,106,.35); }
+.z-terminal::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px); animation: flick 4s steps(2) infinite; }
+@keyframes flick { 50% { opacity: .85 } }
+.z-terminal h2::before { content: '> '; }
+.z-terminal h3::after { content: '_'; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0 } }
+.z-terminal .shot { box-shadow: 0 0 40px rgba(61,255,106,.3); border-color: #3dff6a; filter: saturate(.9); }
+.z-vaporwave { --bg: #1b0b33; --zbg: linear-gradient(180deg, #1b0b33, #3a0f5c 55%, #1b0b33); --bg2: #2a1250; --fg: #ffffff; --fg2: #f3d9ff; --mute: #e2b8f2; --line: rgba(255,113,206,.3); --acc: #ff71ce; --on-acc: #1b0b33; }
+.z-vaporwave .zone-tag::before { content: ''; position: absolute; right: -2%; top: 150px; width: 240px; height: 240px; border-radius: 50%; z-index: -1; background: linear-gradient(180deg, #ffd76a, #ff71ce 70%); -webkit-mask: repeating-linear-gradient(180deg, #000 0 14px, transparent 14px 20px); mask: repeating-linear-gradient(180deg, #000 0 14px, transparent 14px 20px); opacity: .85; }
+.z-vaporwave::after { content: ''; position: absolute; left: -20%; right: -20%; bottom: 0; height: 320px; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(1,205,254,.55) 2px, transparent 2px), linear-gradient(90deg, rgba(1,205,254,.55) 2px, transparent 2px); background-size: 60px 60px; transform: perspective(300px) rotateX(60deg); transform-origin: bottom; mask-image: linear-gradient(transparent, #000 70%); -webkit-mask-image: linear-gradient(transparent, #000 70%); animation: grid 1.4s linear infinite; }
+@keyframes grid { to { background-position: 0 60px, 0 0; } }
+.z-vaporwave h2 .acc, .z-vaporwave h3 { background: linear-gradient(90deg, #ff71ce, #01cdfe); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.z-vaporwave .shot { box-shadow: 14px 14px 0 #01cdfe; border-color: #ff71ce; }
+.z-ocean { --bg: #03213a; --zbg: linear-gradient(180deg, #0d6b9a, #064a73 40%, #03213a); --bg2: rgba(200,244,255,.07); --fg: #e6faff; --fg2: #bfe9f5; --mute: #a9dcec; --line: rgba(200,244,255,.16); --acc: #6fe3ff; --on-acc: #03213a; --head: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; --r: 22px; }
+.z-ocean h2, .z-ocean h3 { font-weight: 300; }
+.z-ocean::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: repeating-linear-gradient(100deg, transparent 0 80px, rgba(200,244,255,.07) 80px 140px, transparent 140px 260px); mask-image: linear-gradient(#000, transparent 70%); -webkit-mask-image: linear-gradient(#000, transparent 70%); animation: rays 9s ease-in-out infinite alternate; }
+@keyframes rays { to { transform: translateX(-80px) skewX(-4deg); } }
+.z-ocean .shot { box-shadow: 0 26px 80px rgba(0,0,0,.4); border-color: rgba(200,244,255,.3); }
+.zone .btn { border-radius: var(--r); }
 
-/* also */
+/* demo-adjacent vibe row (also used on phones) */
 .also { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.also div { background: var(--bg); padding: 22px; }
+.also div { background: var(--bg); padding: 22px; transition: background .2s; }
+.also div:hover { background: var(--bg2); }
 .also b { display: block; font-family: var(--head); font-weight: 400; font-size: 20px; margin-bottom: 6px; }
 .also span { font-size: 13px; color: var(--fg2); }
 
 /* pricing */
 .price { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.plan { border: 2px solid var(--line); padding: 32px; background: var(--bg2); display: flex; flex-direction: column; gap: 18px; }
+.plan { border: 2px solid var(--line); border-radius: var(--r); padding: 32px; background: var(--bg2); display: flex; flex-direction: column; gap: 18px; }
 .plan.pro { border-color: var(--acc); box-shadow: 12px 12px 0 var(--acc); }
 .plan .big { font-size: 64px; }
-.plan .big small { font: 400 14px 'SM'; color: var(--mute); letter-spacing: .1em; }
+.plan .big small { font: 400 14px var(--mono); color: var(--mute); letter-spacing: .1em; }
 .plan ul { list-style: none; padding: 0; margin: 0; font-size: 14px; }
 .plan li { padding: 7px 0; border-bottom: 1px solid var(--line); }
 .plan li::before { content: '✓  '; color: var(--acc); }
@@ -108,230 +208,169 @@ details[open] summary::after { content: '–'; }
 details p { color: var(--fg2); margin: 12px 0 0; max-width: 820px; }
 code { background: var(--bg3); padding: 2px 6px; }
 
-/* final cta + footer */
-.final { text-align: center; }
-.final h2 { font-size: clamp(38px, 10vw, 130px); }
+/* final */
+.final { text-align: center; overflow: hidden; }
+.final h2 { font-size: clamp(42px, 10vw, 140px); }
 .final .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+.final .ctrl { display: inline-flex; gap: 10px; align-items: center; margin-bottom: 28px; font-size: 13px; letter-spacing: .2em; color: var(--mute); }
+.final kbd { font: 400 22px var(--head); padding: 8px 18px; border: 2px solid var(--fg); border-bottom-width: 6px; border-radius: 8px; color: var(--fg); }
 footer { border-top: 1px solid var(--line); padding: 34px 0 60px; font-size: 13px; color: var(--mute); }
 footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 footer a { color: var(--mute); margin-left: 18px; }
 
+/* the Vibe you pick re-skins the parts outside the zones */
+html[data-vibe="midnight"] { --bg: #07080d; --bg2: rgba(255,255,255,.05); --bg3: rgba(255,255,255,.07); --fg: #e8eaf2; --fg2: #b4b9cb; --mute: #9aa0b4; --line: rgba(255,255,255,.1); --acc: #8b7bff; --on-acc: #07080d; --nav: rgba(7,8,13,.72); --glow: rgba(139,123,255,.4); --head: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; --r: 16px; }
+html[data-vibe="terminal"] { --bg: #010402; --bg2: #041008; --bg3: #06160b; --fg: #3dff6a; --fg2: #2fd458; --mute: #1f9a3f; --line: #0f3d1c; --acc: #b6ffc6; --on-acc: #010402; --nav: rgba(1,4,2,.9); --glow: rgba(61,255,106,.25); --head: 'SM', Consolas, monospace; }
+html[data-vibe="vaporwave"] { --bg: #1b0b33; --bg2: #2a1250; --bg3: #35175f; --fg: #ffffff; --fg2: #f3d9ff; --mute: #e2b8f2; --line: rgba(255,113,206,.35); --acc: #ff71ce; --on-acc: #1b0b33; --nav: rgba(27,11,51,.8); --glow: rgba(255,113,206,.4); }
+html[data-vibe="ocean"] { --bg: #03213a; --bg2: rgba(200,244,255,.07); --bg3: rgba(200,244,255,.09); --fg: #e6faff; --fg2: #bfe9f5; --mute: #a9dcec; --line: rgba(200,244,255,.16); --acc: #6fe3ff; --on-acc: #03213a; --nav: rgba(3,33,58,.75); --glow: rgba(111,227,255,.35); --head: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; --r: 22px; }
+html[data-vibe="midnight"] h1, html[data-vibe="midnight"] .line-b h2 { font-weight: 700; } html[data-vibe="ocean"] h1, html[data-vibe="ocean"] .line-b h2 { font-weight: 300; }
+
 @media (max-width: 860px) {
   nav .links { display: none; }
-  .hero-top, .feat, .price { grid-template-columns: 1fr; }
-  .demo-wrap { display: none; }
-  .demo-mobile { display: block; }
+  .feat, .price { grid-template-columns: 1fr; gap: 28px; }
   .feat:nth-of-type(even) .shot { order: 0; }
-  .vibes { grid-template-columns: 1fr; }
-  .also { grid-template-columns: 1fr 1fr; }
-  section { padding: 64px 0; }
+  .who-grid, .also { grid-template-columns: 1fr 1fr; }
+  .who-grid button { min-height: 150px; padding: 18px 14px; min-width: 0; }
+  .who-grid b { font-size: 17px; }
+  .zone-tag { flex-direction: column; align-items: flex-start; gap: 8px; padding: 56px 0 16px; }
+  .zone-tag h2 { font-size: 13vw; max-width: 100%; overflow-wrap: anywhere; }
+  .zone-tag .sw { display: none; }
+  .cbar .live { display: none; }
+  section { padding: 72px 0; }
+  .story { height: 260vh; }
+  .ch.win { width: 170px; height: 112px; } .ch.err { width: 190px; } .ch.note { width: 130px; }
+  .frame iframe { display: none; } .frame img.mob { display: block; } .frame .load { display: none; }
+  .cbar .hint-d { display: none; }
+  .z-vaporwave .zone-tag::before { width: 130px; height: 130px; top: 130px; right: -30px; }
 }
-/* who's it for */
-.who .k { margin-bottom: 14px; }
-.who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.who button { all: unset; box-sizing: border-box; cursor: pointer; padding: 18px; border: 2px solid var(--line); border-radius: var(--r); background: var(--bg2); display: flex; flex-direction: column; gap: 6px; transition: border-color .15s, transform .15s, background .15s; }
-.who button b { font-family: var(--head); font-weight: 400; font-size: 22px; line-height: 1; color: var(--fg); }
-.who button span { font-size: 12px; letter-spacing: .08em; color: var(--mute); }
-.who button:hover { transform: translate(-2px,-2px); border-color: var(--fg2); }
-.who button.on { border-color: var(--acc); background: color-mix(in srgb, var(--acc) 12%, var(--bg2)); }
-.who button.on b { color: var(--acc); }
-.who-say { margin-top: 14px; min-height: 48px; font-size: 14px; color: var(--fg2); }
-/* live demo */
-.demo-wrap { margin-top: 56px; }
-#try { display: block; scroll-margin-top: 80px; }
-.demo-win { border: 2px solid var(--fg); border-radius: var(--r); box-shadow: 14px 14px 0 var(--acc); background: #000; overflow: hidden; transition: box-shadow .4s, border-color .4s; }
-.demo-bar { display: flex; align-items: center; gap: 16px; padding: 10px 16px; background: var(--bg2); border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: .16em; color: var(--mute); }
-.demo-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); display: inline-block; margin-right: 6px; }
-.demo-bar b { color: var(--fg); font-weight: 700; }
-.demo-bar .live { color: var(--acc); }
-.demo-bar .hint { margin-left: auto; letter-spacing: .06em; }
-.demo-frame { position: relative; width: 100%; height: 600px; overflow: hidden; }
-.demo-frame iframe { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; }
-.demo-load { position: absolute; inset: 0; display: grid; place-items: center; color: var(--mute); font-size: 13px; letter-spacing: .2em; pointer-events: none; }
-.vibe-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
-.vibe-row .k { margin-right: 8px; }
-.vibe-row button { all: unset; cursor: pointer; padding: 10px 16px; border: 2px solid var(--line); border-radius: var(--r); font: 700 13px 'SM', monospace; letter-spacing: .14em; color: var(--fg2); transition: border-color .15s, color .15s; }
-.vibe-row button i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: 0; }
-.vibe-row button.on { border-color: var(--acc); color: var(--fg); }
-.vibe-row .note { font-size: 12px; color: var(--mute); }
-.demo-mobile { display: none; margin-top: 40px; }
-.demo-mobile .phone { margin: 0 auto 16px; }
-.demo-mobile p { text-align: center; font-size: 13px; color: var(--mute); }
-
-/* the whole site wears the Vibe you pick */
-html[data-vibe="midnight"] { --bg: #07080d; --bg2: rgba(255,255,255,.05); --bg3: rgba(255,255,255,.07); --fg: #e8eaf2; --fg2: #b4b9cb; --mute: #9aa0b4; --line: rgba(255,255,255,.1); --acc: #8b7bff; --on-acc: #07080d; --nav: rgba(7,8,13,.7); --head: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; --r: 16px; }
-html[data-vibe="midnight"] body { background: radial-gradient(1200px 700px at 20% -10%, rgba(91,75,209,.45), transparent 60%), radial-gradient(900px 600px at 100% 30%, rgba(139,123,255,.18), transparent 60%), #07080d; background-attachment: fixed; }
-html[data-vibe="midnight"] h1, html[data-vibe="midnight"] h2, html[data-vibe="midnight"] h3, html[data-vibe="midnight"] .big { font-weight: 700; letter-spacing: -.03em; }
-html[data-vibe="midnight"] .btn, html[data-vibe="midnight"] .tag { border-radius: 999px; }
-html[data-vibe="midnight"] .shot, html[data-vibe="midnight"] .demo-win, html[data-vibe="midnight"] .plan.pro { box-shadow: 0 30px 80px rgba(91,75,209,.35); border-color: rgba(255,255,255,.14); }
-html[data-vibe="terminal"] { --bg: #010402; --bg2: #041008; --bg3: #06160b; --fg: #3dff6a; --fg2: #2fd458; --mute: #1f9a3f; --line: #0f3d1c; --acc: #b6ffc6; --on-acc: #010402; --nav: rgba(1,4,2,.9); --head: 'SM', Consolas, monospace; }
-html[data-vibe="terminal"] body { text-shadow: 0 0 6px rgba(61,255,106,.35); }
-html[data-vibe="terminal"] body::after { content: ''; position: fixed; inset: 0; z-index: 99; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px); }
-html[data-vibe="terminal"] h1 { letter-spacing: -.04em; }
-html[data-vibe="terminal"] .shot, html[data-vibe="terminal"] .demo-win, html[data-vibe="terminal"] .plan.pro { box-shadow: 0 0 30px rgba(61,255,106,.25); }
-html[data-vibe="vaporwave"] { --bg: #1b0b33; --bg2: #2a1250; --bg3: #35175f; --fg: #ffffff; --fg2: #f3d9ff; --mute: #e2b8f2; --line: rgba(255,113,206,.35); --acc: #ff71ce; --on-acc: #1b0b33; --nav: rgba(27,11,51,.8); }
-html[data-vibe="vaporwave"] body { background: linear-gradient(180deg, #1b0b33 0, #2b0f54 600px, #1b0b33 1400px); }
-html[data-vibe="vaporwave"] .hero { background: radial-gradient(420px 420px at 82% 18%, rgba(255,179,138,.55), rgba(255,113,206,.25) 45%, transparent 70%); }
-html[data-vibe="vaporwave"] h1 b, html[data-vibe="vaporwave"] h2 .acc { background: linear-gradient(90deg, #ff71ce, #01cdfe); -webkit-background-clip: text; background-clip: text; color: transparent; }
-html[data-vibe="vaporwave"] .shot, html[data-vibe="vaporwave"] .demo-win, html[data-vibe="vaporwave"] .plan.pro { box-shadow: 14px 14px 0 #01cdfe; }
-html[data-vibe="ocean"] { --bg: #03213a; --bg2: rgba(200,244,255,.07); --bg3: rgba(200,244,255,.09); --fg: #e6faff; --fg2: #bfe9f5; --mute: #a9dcec; --line: rgba(200,244,255,.16); --acc: #6fe3ff; --on-acc: #03213a; --nav: rgba(3,33,58,.75); --head: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; --r: 22px; }
-html[data-vibe="ocean"] body { background: linear-gradient(180deg, #0d6b9a 0, #064a73 500px, #03213a 1200px); }
-html[data-vibe="ocean"] h1, html[data-vibe="ocean"] h2, html[data-vibe="ocean"] h3, html[data-vibe="ocean"] .big { font-weight: 300; letter-spacing: -.02em; }
-html[data-vibe="ocean"] .btn, html[data-vibe="ocean"] .tag { border-radius: 999px; }
-html[data-vibe="ocean"] .shot, html[data-vibe="ocean"] .demo-win, html[data-vibe="ocean"] .plan.pro { box-shadow: 0 24px 70px rgba(0,0,0,.35); border-color: rgba(200,244,255,.3); }
-html[data-vibe="midnight"] .btn.acc:hover, html[data-vibe="ocean"] .btn.acc:hover { box-shadow: 0 10px 30px color-mix(in srgb, var(--acc) 45%, transparent); }
-
-@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
 
+<div id="boot" aria-hidden="true"><h2>CATALYST<b>.</b></h2>
+  <div class="log"><span>&gt; SCANNING GAMES ............ 31</span><span>&gt; APPS + SITES ............. 87</span><span>&gt; PUTTING IT ALL IN ONE PLACE</span><span>&gt; READY</span></div>
+  <div class="bar"><i></i></div></div>
+
 <nav><div class="wrap">
   <a class="logo" href="#">CATALYST<b>.</b></a>
-  <div class="links"><a href="#features">FEATURES</a><a href="#vibes">VIBES</a><a href="#pricing">PRICING</a><a href="#faq">FAQ</a></div>
-  <a class="btn acc" href="#download" style="padding:10px 16px;font-size:12px">DOWNLOAD</a>
+  <div class="links"><a href="#who">WHO IT'S FOR</a><a href="#features">FEATURES</a><a href="#pricing">PRICING</a><a href="#faq">FAQ</a></div>
+  <a class="btn acc" href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest/download/Catalyst-Setup.exe" style="padding:10px 16px;font-size:12px">DOWNLOAD</a>
 </div></nav>
 
-<header class="hero"><div class="wrap">
-  <div class="hero-top">
-    <div>
-      <div class="k">FOR WINDOWS · FREE TO USE</div>
-      <h1 id="h1">YOUR WHOLE PC.<br><b>ONE SCREEN.</b></h1>
-      <p class="lead" id="lead">Catalyst finds every app, game, file and site on your PC and puts them on one home screen. Search from anywhere, open whole setups in one click, and make it look like you.</p>
-      <div class="cta" id="download">
-        <a class="btn acc" href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest/download/Catalyst-Setup.exe">DOWNLOAD FOR WINDOWS</a>
-        <a class="btn ghost" href="#try">TRY IT HERE ↓</a>
+<header class="story" id="story">
+  <div class="stage" id="stage">
+    <div class="stage-bg" id="stage-bg"></div>
+    <div class="chaos" id="chaos" aria-hidden="true"></div>
+    <div class="lines line-a" id="line-a"><h1>YOUR PC<br>IS A <b>MESS.</b></h1><p>Six launchers. Forty icons. Zero idea where anything is.</p></div>
+    <div class="lines line-b" id="line-b" style="opacity:0"><h2>NOW IT'S <b>ONE SCREEN.</b></h2></div>
+    <div class="cwin" id="cwin">
+      <div class="cwin-in">
+        <div class="cbar"><b>CATALYST</b><span class="live">● LIVE DEMO</span><span class="hint-d">Click around · try Ctrl+Space</span>
+          <span class="vibe-dots" id="vibe-dots" aria-label="Pick a Vibe">
+            <button type="button" data-vibe="studio" style="background:#ff5a1f" aria-label="Studio Vibe" title="Studio"></button>
+            <button type="button" data-vibe="midnight" style="background:#8b7bff" aria-label="Midnight Vibe" title="Midnight"></button>
+            <button type="button" data-vibe="terminal" style="background:#3dff6a" aria-label="Terminal Vibe" title="Terminal"></button>
+            <button type="button" data-vibe="vaporwave" style="background:#ff71ce" aria-label="Vaporwave Vibe" title="Vaporwave"></button>
+            <button type="button" data-vibe="ocean" style="background:#6fe3ff" aria-label="Ocean Vibe" title="Ocean"></button>
+          </span></div>
+        <div class="frame" id="frame"><div class="load">LOADING CATALYST…</div><img class="mob" src="shots/home.jpg" alt="Catalyst home screen"><iframe id="demo" title="Catalyst live demo: click around the real app" loading="lazy"></iframe></div>
       </div>
-      <div class="meta">Windows 10 and 11 · <a href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest/download/Catalyst.exe">Portable version</a> · <a href="#mac">Mac beta</a> · <a href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest">What’s new in 0.7 ›</a></div>
     </div>
-    <div class="who">
-      <div class="k">WHAT’S YOUR PC FOR?</div>
-      <div class="who-grid">
-        <button type="button" data-who="gaming"><b>GAMING</b><span>Every launcher, one library</span></button>
-        <button type="button" data-who="streaming"><b>STREAMING</b><span>Go live without the panic</span></button>
-        <button type="button" data-who="school"><b>SCHOOL</b><span>What’s due, and focus</span></button>
-        <button type="button" data-who="music"><b>MAKING MUSIC</b><span>Your studio in one click</span></button>
-      </div>
-      <div class="who-say" id="who-say">Pick one and Catalyst shows you the parts that matter to you.</div>
+    <div class="under" id="under">
+      <a class="btn acc" href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest/download/Catalyst-Setup.exe">DOWNLOAD FREE</a>
+      <span class="hint">Windows 10 + 11 · the dots up top switch Vibes · <a href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest">what’s new in 0.7</a></span>
     </div>
+    <div class="scrollcue" id="cue">SCROLL<i></i></div>
   </div>
-
-  <span id="try"></span>
-  <div class="demo-wrap">
-    <div class="demo-win">
-      <div class="demo-bar"><span><i></i><i></i><i></i></span><b>CATALYST</b><span class="live">● LIVE DEMO</span><span class="hint">Click around. Try Ctrl+Space. Nothing here touches your PC.</span></div>
-      <div class="demo-frame" id="demo-frame"><div class="demo-load">LOADING CATALYST…</div><iframe id="demo" src="demo/index.html" title="Catalyst live demo: click around the real app" loading="lazy"></iframe></div>
-    </div>
-  </div>
-  <div class="demo-mobile">
-    <div class="phone">
-      <video id="trailer" src="media/trailer.mp4" poster="media/poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
-      <button type="button" id="snd" aria-label="Turn sound on">SOUND ON</button>
-    </div>
-    <p>Open this page on a computer to click around a live Catalyst.</p>
-  </div>
-  <div class="vibe-row" id="vibes-pick"><span class="k">PICK A VIBE</span>
-    <button type="button" data-vibe="studio"><i style="background:#ff5a1f"></i>STUDIO</button>
-    <button type="button" data-vibe="midnight"><i style="background:#8b7bff"></i>MIDNIGHT</button>
-    <button type="button" data-vibe="terminal"><i style="background:#3dff6a"></i>TERMINAL</button>
-    <button type="button" data-vibe="vaporwave"><i style="background:#ff71ce"></i>VAPORWAVE</button>
-    <button type="button" data-vibe="ocean"><i style="background:#6fe3ff"></i>OCEAN</button>
-    <span class="note">The app and this whole page change with it.</span>
-  </div>
-</div>
-<div class="marq" aria-hidden="true"><div>
-  <span>CTRL + SPACE</span><span>ONE CLICK</span><span>WORKSPACES</span><span>FLOW</span><span>VIBES</span><span>GAMES</span><span>STATS</span><span>STUDIO</span><span>NOW PLAYING</span>
-  <span>CTRL + SPACE</span><span>ONE CLICK</span><span>WORKSPACES</span><span>FLOW</span><span>VIBES</span><span>GAMES</span><span>STATS</span><span>STUDIO</span><span>NOW PLAYING</span>
-</div></div>
 </header>
 
-<section id="features"><div class="wrap">
-  <div class="head"><h2>WHAT IT<br><span class="acc">DOES.</span></h2><p>No more digging through File Explorer, the Start menu and five game launchers. Everything lives in one place and opens in one click.</p></div>
+<div class="marq" aria-hidden="true"><div>
+  <span>CTRL + SPACE</span><span>ONE CLICK</span><span>WORKSPACES</span><span>FLOW</span><span>VIBES</span><span>GAMES</span><span>STREAM</span><span>SCHOOL</span><span>PHONE DECK</span>
+  <span>CTRL + SPACE</span><span>ONE CLICK</span><span>WORKSPACES</span><span>FLOW</span><span>VIBES</span><span>GAMES</span><span>STREAM</span><span>SCHOOL</span><span>PHONE DECK</span>
+</div></div>
 
-  <div class="feat">
-    <div><div class="k">01 · HOME</div><h3>Everything,<br>found for you.</h3>
-      <p>Catalyst scans your PC and sorts every app and game into sections on its own: Steam, Epic, Xbox, Roblox, the Start menu, all of it.</p>
-      <ul><li>A two-minute setup: tell it what your PC is for and it builds itself around you</li><li>Suggests what you usually open at this time of day</li><li>Pin anything, rename it, give it a hotkey</li><li>Pick your packs (Gaming, Music, Streaming, School, Video, Code, Design) and only those tabs show</li><li>Move, hide, rename or reorder any tab</li></ul></div>
-    <div class="shot"><img src="shots/home.jpg" alt="Catalyst home screen with tiles, stats and Now Playing" loading="lazy"></div>
+<section id="who"><div class="wrap">
+  <div class="head"><h2 id="who-h">WHAT'S YOUR<br><span class="acc">PC FOR?</span></h2><p>Catalyst builds itself around what you do. Pick one and the demo up top and the features below follow.</p></div>
+  <div class="who-grid">
+    <button type="button" data-who="gaming" class="rv"><i>01</i><b>GAMING</b><span>Every launcher in one library, and one click that gives your game the whole PC.</span></button>
+    <button type="button" data-who="streaming" class="rv"><i>02</i><b>STREAMING</b><span>A checklist that checks itself and a shield that hides Discord on stream.</span></button>
+    <button type="button" data-who="school" class="rv"><i>03</i><b>SCHOOL</b><span>What's due from your class calendar, and a study lock that keeps games closed.</span></button>
+    <button type="button" data-who="music" class="rv"><i>04</i><b>MAKING MUSIC</b><span>Your DAW, plugins and beat folder open together. Pinged when exports finish.</span></button>
   </div>
+  <div class="who-say" id="who-say"></div>
+</div></section>
 
-  <div class="feat">
-    <div><div class="k">02 · SEARCH</div><h3>Ctrl + Space<br>from anywhere.</h3>
+<div id="features">
+<section class="zone z-studio" data-zone="studio"><div class="wrap">
+  <div class="zone-tag"><span>VIBE 1 / 5</span><h2>STUDIO</h2><i class="sw"></i></div>
+  <div class="zone-in">
+    <div class="feat" data-k="HOME"><div class="rv"><div class="k">HOME</div><h3>Everything,<br>found for you.</h3>
+      <p>Catalyst scans your PC and sorts every app and game into sections on its own: Steam, Epic, Xbox, Roblox, the Start menu, all of it.</p>
+      <ul><li>A two-minute setup: tell it what your PC is for and it builds itself around you</li><li>Suggests what you usually open at this time of day</li><li>Pin anything, rename it, give it a hotkey</li><li>Only the tabs you use show up</li></ul></div>
+      <div class="shot rv"><img src="shots/home.jpg" alt="Catalyst home screen with tiles, stats and Now Playing" loading="lazy"></div></div>
+    <div class="feat" data-k="SEARCH"><div class="rv"><div class="k">SEARCH</div><h3>Ctrl + Space<br>from anywhere.</h3>
       <p>Type a few letters and open any app, game, file, folder or setting. Typos are fine.</p>
       <ul><li>Find files by name in your folders</li><li>Commands like <code>close discord</code> or <code>yt lofi</code></li><li>Chain them: <code>stream mode and mute discord</code>, <code>study 45 minutes</code></li><li>Built-in calculator and unit converter</li></ul></div>
-    <div class="shot"><img src="shots/search.jpg" alt="Catalyst search bar showing grouped results" loading="lazy"></div>
-  </div>
+      <div class="shot rv"><img src="shots/search.jpg" alt="Catalyst search bar showing grouped results" loading="lazy"></div></div>
+  </div></div></section>
 
-  <div class="feat">
-    <div><div class="k">03 · WORKSPACES</div><h3>One click.<br>Whole setup.</h3>
+<section class="zone z-midnight" data-zone="midnight"><div class="wrap">
+  <div class="zone-tag"><span>VIBE 2 / 5</span><h2>Midnight</h2><i class="sw"></i></div>
+  <div class="zone-in">
+    <div class="feat" data-k="WORKSPACES"><div class="rv"><div class="k">WORKSPACES</div><h3>One click.<br>Whole setup.</h3>
       <p>A workspace opens everything you need for a task at once, like Studio Mode or Game Night.</p>
       <ul><li>Every window goes back where you left it, even on two monitors <span class="tag">PRO</span></li><li>Apps already open get skipped</li><li>Start from templates built from your own apps</li></ul></div>
-    <div class="shot"><img src="shots/workspaces.jpg" alt="Workspace editor with launch order and window layout" loading="lazy"></div>
-  </div>
-
-  <div class="feat">
-    <div><div class="k">04 · GAMES</div><h3>Every launcher,<br>one library.</h3>
-      <p>All your games with cover art, favorites and how long you've played.</p>
-      <ul><li>Game profiles: pause music, open Discord, close the rest <span class="tag">PRO</span></li><li>Game Mode with a CPU / GPU overlay <span class="tag">PRO</span></li><li>Controller support across the whole app</li></ul></div>
-    <div class="shot"><img src="shots/games.jpg" alt="Games library with cover art" loading="lazy"></div>
-  </div>
-
-  <div class="feat">
-    <div><div class="k">05 · FLOW <span class="tag">PRO</span></div><h3>Your PC runs<br>itself.</h3>
-      <p>Flow automations: pick a trigger, then pick what happens.</p>
-      <ul><li>When OBS opens, launch your stream setup</li><li>When any game starts, turn on Game Mode</li><li>When a file lands in Downloads, sort it</li></ul></div>
-    <div class="shot"><img src="shots/flow.jpg" alt="Flow automations screen" loading="lazy"></div>
-  </div>
-
-  <div class="feat">
-    <div><div class="k">06 · MY PC</div><h3>A faster PC,<br>and where your time goes.</h3>
-      <p>A health score for your PC with the fixes that make it feel new, plus how long you spend in every app. It all stays on your PC.</p>
-      <ul><li>Turn off the apps slowing down every boot <span class="tag">PRO</span></li><li>Clean up temp files, old installers and duplicates <span class="tag">PRO</span></li><li>Game Boost: your game gets priority while you play <span class="tag">PRO</span></li><li>Today's time for free, full history, limits and a focus timer <span class="tag">PRO</span></li></ul></div>
-    <div class="shot"><img src="shots/doctor.jpg" alt="My PC with health score, startup apps and cleanup" loading="lazy"></div>
-  </div>
-
-  <div class="feat">
-    <div><div class="k">07 · PHONE</div><h3>Your phone runs<br>your PC.</h3>
+      <div class="shot rv"><img src="shots/workspaces.jpg" alt="Workspace editor with launch order and window layout" loading="lazy"></div></div>
+    <div class="feat" data-k="PHONE"><div class="rv"><div class="k">PHONE</div><h3>Your phone runs<br>your PC.</h3>
       <p>Scan one QR code and your phone is connected to your PC over your home Wi-Fi.</p>
       <ul><li>Drop photos, videos, files and links both ways</li><li>Get pinged when a download, export or render finishes</li><li>Lock or sleep your PC from bed</li><li>Deck: your own Stream Deck with OBS, mic mute and a soundboard <span class="tag">PRO</span></li><li>Screen Peek: see your screen live <span class="tag">PRO</span></li></ul></div>
-    <div class="shot"><img src="shots/phone.jpg" alt="Catalyst Phone Deck on the PC and on a phone" loading="lazy"></div>
-  </div>
+      <div class="shot rv"><img src="shots/phone.jpg" alt="Catalyst Phone Deck on the PC and on a phone" loading="lazy"></div></div>
+  </div></div></section>
 
-  <div class="feat">
-    <div><div class="k">08 · STREAM</div><h3>Go live<br>without the panic.</h3>
+<section class="zone z-terminal" data-zone="terminal"><div class="wrap">
+  <div class="zone-tag"><span>VIBE 3 / 5</span><h2>terminal</h2><i class="sw"></i></div>
+  <div class="zone-in">
+    <div class="feat" data-k="FLOW"><div class="rv"><div class="k">FLOW <span class="tag">PRO</span></div><h3>Your PC runs itself</h3>
+      <p>Flow automations: pick a trigger, then pick what happens. Changed your mind? Every run can be undone.</p>
+      <ul><li>When OBS opens, launch your stream setup</li><li>When any game starts, turn on Game Mode</li><li>When a file lands in Downloads, sort it</li></ul></div>
+      <div class="shot rv"><img src="shots/flow.jpg" alt="Flow automations screen" loading="lazy"></div></div>
+    <div class="feat" data-k="MY PC"><div class="rv"><div class="k">MY PC</div><h3>A faster PC</h3>
+      <p>A health score for your PC with the fixes that make it feel new, plus how long you spend in every app. It all stays on your PC.</p>
+      <ul><li>Turn off the apps slowing down every boot <span class="tag">PRO</span></li><li>Clean up temp files, old installers and duplicates <span class="tag">PRO</span></li><li>Game Boost: your game gets priority while you play <span class="tag">PRO</span></li><li>Today's time for free, full history, limits and a focus timer <span class="tag">PRO</span></li></ul></div>
+      <div class="shot rv"><img src="shots/doctor.jpg" alt="My PC with health score, startup apps and cleanup" loading="lazy"></div></div>
+  </div></div></section>
+
+<section class="zone z-vaporwave" data-zone="vaporwave"><div class="wrap">
+  <div class="zone-tag"><span>VIBE 4 / 5</span><h2>VAPOR<span class="acc">WAVE</span></h2><i class="sw"></i></div>
+  <div class="zone-in">
+    <div class="feat" data-k="GAMES"><div class="rv"><div class="k">GAMES</div><h3>Every launcher,<br>one library.</h3>
+      <p>All your games with cover art, favorites and how long you've played.</p>
+      <ul><li>Game profiles: pause music, open Discord, close the rest <span class="tag">PRO</span></li><li>Game Mode with a CPU / GPU overlay <span class="tag">PRO</span></li><li>Controller support across the whole app</li></ul></div>
+      <div class="shot rv"><img src="shots/games.jpg" alt="Games library with cover art" loading="lazy"></div></div>
+    <div class="feat" data-k="STREAM"><div class="rv"><div class="k">STREAM</div><h3>Go live<br>without the panic.</h3>
       <p>A checklist that checks itself: OBS open and connected, mic live, enough space, PC not struggling. Then go live in one click.</p>
       <ul><li>Go Live checklist with your own steps</li><li>Privacy shield: Discord or your email on screen? OBS flips to a safe scene <span class="tag">PRO</span></li><li>Auto director switches scenes for you <span class="tag">PRO</span></li><li>Clip hotkey and a recap after every stream <span class="tag">PRO</span></li></ul></div>
-    <div class="shot"><img src="shots/stream.jpg" alt="Stream tab with the Go Live checklist and privacy shield" loading="lazy"></div>
-  </div>
+      <div class="shot rv"><img src="shots/stream.jpg" alt="Stream tab with the Go Live checklist and privacy shield" loading="lazy"></div></div>
+  </div></div></section>
 
-  <div class="feat">
-    <div><div class="k">09 · SCHOOL</div><h3>Know what's due.<br>Actually do it.</h3>
+<section class="zone z-ocean" data-zone="ocean"><div class="wrap">
+  <div class="zone-tag"><span>VIBE 5 / 5</span><h2>ocean</h2><i class="sw"></i></div>
+  <div class="zone-in">
+    <div class="feat" data-k="SCHOOL"><div class="rv"><div class="k">SCHOOL</div><h3>Know what's due.<br>Actually do it.</h3>
       <p>Paste your Google Classroom, Canvas or Outlook calendar link and your classes and assignments show up on their own.</p>
       <ul><li>Today, due soon and your own to-do list</li><li>Each class opens its apps and meeting link in one click</li><li>Study lock closes your distractions until the timer ends <span class="tag">PRO</span></li><li>Meeting mode and a GPA tracker <span class="tag">PRO</span></li></ul></div>
-    <div class="shot"><img src="shots/school.jpg" alt="School tab with classes, due soon and study lock" loading="lazy"></div>
-  </div>
-
-  <div class="feat">
-    <div><div class="k">10 · LIVE WALLPAPER <span class="tag">BETA</span></div><h3>Your whole desktop,<br>in your Vibe.</h3>
+      <div class="shot rv"><img src="shots/school.jpg" alt="School tab with classes, due soon and study lock" loading="lazy"></div></div>
+    <div class="feat" data-k="WALLPAPER"><div class="rv"><div class="k">LIVE WALLPAPER <span class="tag">BETA</span></div><h3>Your whole desktop,<br>in your Vibe.</h3>
       <p>A moving wallpaper behind your icons that matches your Vibe and pauses itself when you play.</p>
       <ul><li>Studio is free, every other style is Pro <span class="tag">PRO</span></li><li>Can move to your music if you turn on Beat sync (off by default) <span class="tag">PRO</span></li><li>Desktop widgets: clock, now playing, PC health, creator stats and more</li></ul></div>
-    <div class="shot"><img src="shots/wallpaper.jpg" alt="Vaporwave live wallpaper with desktop widgets" loading="lazy"></div>
-  </div>
-</div></section>
+      <div class="shot rv"><img src="shots/wallpaper.jpg" alt="Vaporwave live wallpaper with desktop widgets" loading="lazy"></div></div>
+  </div></div></section>
+</div>
 
-<section id="vibes" style="padding-top:0"><div class="wrap">
-  <div class="head"><h2>PICK YOUR<br><span class="acc">VIBE.</span></h2><p>Vibes change the whole look, not just the colors. Studio and Midnight are free. Terminal, Vaporwave, Ocean and building your own come with Pro.</p></div>
-  <div class="vibes">
-    <figure><img src="shots/vibe-midnight.jpg" alt="Midnight Vibe" loading="lazy"><figcaption><span>MIDNIGHT</span><span class="acc">FREE</span></figcaption></figure>
-    <figure><img src="shots/vibe-vaporwave.jpg" alt="Vaporwave Vibe" loading="lazy"><figcaption><span>VAPORWAVE</span><span class="tag">PRO</span></figcaption></figure>
-    <figure><img src="shots/vibe-terminal.jpg" alt="Terminal Vibe" loading="lazy"><figcaption><span>TERMINAL</span><span class="tag">PRO</span></figcaption></figure>
-    <figure><img src="shots/vibe-ocean.jpg" alt="Ocean Vibe" loading="lazy"><figcaption><span>OCEAN</span><span class="tag">PRO</span></figcaption></figure>
-  </div>
-</div></section>
-
-<section style="padding-top:0"><div class="wrap">
+<section><div class="wrap">
   <div class="head"><h2>AND<br><span class="acc">MORE.</span></h2></div>
-  <div class="also">
+  <div class="also rv">
     <div><b>Now Playing</b><span>Whatever's playing on your PC, with album art and controls.</span></div>
     <div><b>Downloads sorter</b><span>Sorts by your rules, preview first, undo anything. <span class="tag">PRO</span></span></div>
     <div><b>Studio</b><span>Release tracker and a drop zone for beats and bounces. <span class="tag">PRO</span></span></div>
@@ -350,12 +389,12 @@ html[data-vibe="midnight"] .btn.acc:hover, html[data-vibe="ocean"] .btn.acc:hove
 <section id="pricing" style="padding-top:0"><div class="wrap">
   <div class="head"><h2>FREE.<br><span class="acc">OR PRO.</span></h2><p>The free version is a full home screen you can use forever. Pro unlocks everything that makes your PC work for you.</p></div>
   <div class="price">
-    <div class="plan">
+    <div class="plan rv">
       <div class="k">FREE</div><div class="big">$0 <small>FOREVER</small></div>
       <ul><li>Home screen with every app and game</li><li>Search from anywhere, file search, commands</li><li>Games library with favorites</li><li>Studio and Midnight Vibes</li><li>1 workspace, 3 app hotkeys, 1 custom section</li><li>Today's stats, Now Playing, clipboard</li><li>Phone Drop (10 a day), download alerts, lock + sleep from your phone</li><li>PC health score, Studio live wallpaper + clock widget</li><li>Packs + Customize, smart commands</li><li>Go Live checklist, school calendar + classes</li><li>Free updates</li></ul>
       <a class="btn ghost" href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest/download/Catalyst-Setup.exe">DOWNLOAD</a>
     </div>
-    <div class="plan pro">
+    <div class="plan pro rv">
       <div class="k">PRO</div><div class="big">$19.99 <small>ONE TIME</small></div>
       <ul><li>Everything in Free</li><li>Flow automations</li><li>Unlimited workspaces + window layouts</li><li>Every Vibe + the Vibe builder</li><li>Game profiles + Game Mode</li><li>Downloads sorter, Studio tools</li><li>Full stats, limits, focus timer</li><li>Unlimited hotkeys + sections, smart suggestions</li><li>Phone Deck, Screen Peek, unlimited Drop + full phone controls</li><li>PC Doctor fixes + Game Boost</li><li>Every live wallpaper + desktop widget, creator stats</li><li>Stream: privacy shield, auto director, clips, recaps</li><li>School: study lock, meeting mode, GPA</li><li>Sync, Discord status, mini mode</li><li>Use on up to 3 PCs · free updates</li></ul>
       <a class="btn acc" id="buy" href="https://buy.stripe.com/7sYbJ35ECci35Db13E7ss00">GET PRO</a>
@@ -374,9 +413,11 @@ html[data-vibe="midnight"] .btn.acc:hover, html[data-vibe="ocean"] .btn.acc:hove
   <details><summary>Refunds and support</summary><p>Payments are handled by Stripe. For refunds or payment questions, reply to your receipt email. See the <a href="terms.html">terms</a>.</p></details>
 </div></section>
 
-<section class="final" style="padding-top:20px"><div class="wrap">
+<section class="final"><div class="wrap">
+  <div class="ctrl"><kbd>CTRL</kbd>+<kbd>SPACE</kbd></div>
   <h2>ONE CLICK AND<br><span class="acc">EVERYTHING KICKS OFF.</span></h2>
   <div class="cta"><a class="btn acc" href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest/download/Catalyst-Setup.exe">DOWNLOAD FREE</a><a class="btn ghost" href="#pricing">GET PRO · $19.99</a></div>
+  <p class="k" style="margin-top:22px">Windows 10 + 11 · <a href="https://github.com/SaltwaterSoundsOfficial/catalyst-app/releases/latest/download/Catalyst.exe">portable version</a> · <a href="#mac">Mac beta</a></p>
 </div></section>
 
 <footer><div class="wrap">
@@ -387,56 +428,121 @@ html[data-vibe="midnight"] .btn.acc:hover, html[data-vibe="ocean"] .btn.acc:hove
 <script>
 (() => {
   const $ = (q) => document.querySelector(q); const $$ = (q) => [...document.querySelectorAll(q)];
-  // trailer (phones)
-  const v = $('#trailer'), snd = $('#snd');
-  if (v && snd) snd.addEventListener('click', () => { v.muted = !v.muted; if (!v.muted) { v.currentTime = 0; v.play(); } snd.textContent = v.muted ? 'SOUND ON' : 'SOUND OFF'; });
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small = () => innerWidth <= 860;
+  document.documentElement.classList.add('js');
 
-  // live demo: the real Catalyst window (1440x900) scaled to fit
-  const frame = $('#demo-frame'), demo = $('#demo');
-  const fit = () => { if (!frame || !demo) return; const w = frame.clientWidth; const sc = Math.min(1, w / 1440); demo.style.transform = 'scale(' + sc + ')'; frame.style.height = Math.round(900 * sc) + 'px'; };
-  addEventListener('resize', fit); fit();
+  /* boot intro: once per visit, click to skip */
+  const boot = $('#boot');
+  let seen = false; try { seen = sessionStorage.getItem('cat.boot') === '1'; } catch (e) {}
+  const endBoot = () => { boot.classList.add('out'); try { sessionStorage.setItem('cat.boot', '1'); } catch (e) {} };
+  if (seen || reduce) boot.remove(); else { boot.addEventListener('click', endBoot); setTimeout(endBoot, 1750); }
+
+  /* the messy desktop */
+  const CH = [
+    ['ic', 'Steam', '#1b2838'], ['ic', 'Epic Games', '#2a2a2a'], ['ic', 'Discord', '#5865f2'], ['ic', 'Battle.net', '#148eff'], ['ic', 'Spotify', '#1db954'], ['ic', 'OBS', '#302e31'],
+    ['ic', 'Chrome', '#e8453c'], ['ic', 'New Folder (3)', '#e8b923'], ['ic', 'final_FINAL_v2.wav', '#ff5a1f'], ['ic', 'Untitled.png', '#2d8cff'], ['ic', 'homework.docx', '#2b579a'], ['ic', 'Riot Client', '#d13639'],
+    ['ic', 'Xbox', '#107c10'], ['ic', 'Roblox', '#e2231a'], ['ic', 'Recycle Bin', '#5f6b7a'], ['ic', 'setup (1).exe', '#777'], ['ic', 'Zoom', '#2d8cff'], ['ic', 'notes.txt', '#888'], ['ic', 'EA app', '#ff4747'], ['ic', 'screenshot 412.png', '#22c7a9'],
+    ['win', 'Downloads — 247 items'], ['win', 'Chrome — 38 tabs'], ['win', 'Steam Library'], ['win', 'Settings'],
+    ['note', 'where did I save the beat??'], ['note', 'stream at 8!! open obs, discord, spotify…'],
+    ['err', 'Not responding', 'Discord is not responding. Wait or close?'], ['err', 'Low disk space', 'You are running out of space on (C:)']
+  ];
+  const chaos = $('#chaos'); const els = [];
+  const R = (a, b) => a + Math.random() * (b - a);
+  CH.forEach(([type, a, b], i) => {
+    const d = document.createElement('div'); d.className = 'ch' + (type === 'ic' ? '' : ' ' + type);
+    if (type === 'ic') d.innerHTML = `<div class="ic" style="background:${b}">${a.replace(/[^A-Za-z]/g, '').slice(0, 2).toUpperCase()}</div><div>${a}</div>`;
+    if (type === 'win') d.innerHTML = `<div class="tb">${a}<i>— ▢ ✕</i></div><div class="bd"><span></span><span></span><span></span><span></span></div>`;
+    if (type === 'note') d.textContent = a;
+    if (type === 'err') d.innerHTML = `<b>⚠ ${a}</b>${b}`;
+    chaos.appendChild(d);
+    els.push({ d, x: R(.02, .9), y: R(.1, .86), r: R(-18, 18) * (type === 'ic' ? .4 : 1), delay: Math.random(), float: R(0, Math.PI * 2) });
+  });
+
+  /* the window + live demo */
+  const cwin = $('#cwin'), frame = $('#frame'), demo = $('#demo');
+  const size = () => {
+    const vh = innerHeight; const w = Math.min(1180, innerWidth - 32, (vh - 300) * 1.6);
+    cwin.style.setProperty('--ww', Math.max(280, w) + 'px');
+    const fw = Math.max(280, w) - 4; frame.style.height = Math.round(fw * 0.625) + 'px';
+    demo.style.transform = 'scale(' + (fw / 1440) + ')';
+  };
+  addEventListener('resize', size); size();
+  if (!small()) demo.src = 'demo/index.html';
   const send = (m) => { try { demo.contentWindow.postMessage(m, '*'); } catch (e) {} };
 
-  // Vibes: the whole page follows
+  /* scroll story */
+  const story = $('#story'), la = $('#line-a'), lb = $('#line-b'), under = $('#under'), cue = $('#cue'), bg = $('#stage-bg');
+  const clamp = (v) => Math.max(0, Math.min(1, v)); const ease = (t) => 1 - Math.pow(1 - t, 3); const easeIn = (t) => t * t * t;
+  let ticking = false; let t0 = performance.now();
+  const draw = () => {
+    ticking = false;
+    const total = story.offsetHeight - innerHeight; const p = reduce ? 1 : clamp(-story.getBoundingClientRect().top / total);
+    const W = innerWidth, H = innerHeight, cx = W / 2, cy = H * .56; const now = (performance.now() - t0) / 1000;
+    for (const e of els) {
+      const t = easeIn(clamp((p - .12 - e.delay * .18) / .34));
+      const fx = Math.sin(now * .7 + e.float) * 6 * (1 - t), fy = Math.cos(now * .6 + e.float) * 5 * (1 - t);
+      const x = e.x * W + (cx - e.x * W) * t + fx, y = e.y * H + (cy - e.y * H) * t + fy;
+      e.d.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${e.r * (1 - t)}deg) scale(${1 - t * .85})`;
+      e.d.style.opacity = String(1 - clamp((t - .7) / .3));
+    }
+    la.style.opacity = String(1 - clamp((p - .08) / .2)); la.style.transform = `translateY(-50%) scale(${1 + clamp(p / .3) * .15})`;
+    const w = ease(clamp((p - .42) / .3));
+    cwin.style.opacity = String(clamp((p - .42) / .12)); cwin.style.transform = `translate(-50%, -50%) scale(${.25 + w * .75})`;
+    bg.style.opacity = String(clamp((p - .45) / .2) * (1 - clamp((p - .8) / .2) * .5));
+    lb.style.opacity = String(clamp((p - .62) / .14)); lb.style.transform = `translateY(${(1 - clamp((p - .62) / .14)) * 20}px)`;
+    under.style.opacity = String(clamp((p - .78) / .1)); under.style.pointerEvents = p > .8 ? 'auto' : 'none';
+    cue.style.opacity = String(1 - clamp(p / .06));
+    cwin.style.pointerEvents = p > .7 ? 'auto' : 'none';
+  };
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(draw); } };
+  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
+  const idle = () => { const r = story.getBoundingClientRect(); if (r.bottom > 0 && -r.top < innerHeight * .9) draw(); requestAnimationFrame(idle); };
+  if (!reduce) requestAnimationFrame(idle); else draw();
+
+  /* Vibes: dots on the window re-skin the demo and the page */
   const VIBES = ['studio', 'midnight', 'terminal', 'vaporwave', 'ocean'];
   let vibe = 'studio'; try { const s = localStorage.getItem('cat.siteVibe'); if (VIBES.includes(s)) vibe = s; } catch (e) {}
   const setVibe = (x, fromDemo) => {
     if (!VIBES.includes(x)) return; vibe = x;
     if (x === 'studio') document.documentElement.removeAttribute('data-vibe'); else document.documentElement.setAttribute('data-vibe', x);
-    $$('#vibes-pick [data-vibe]').forEach((b) => b.classList.toggle('on', b.dataset.vibe === x));
+    $$('#vibe-dots [data-vibe]').forEach((b) => b.classList.toggle('on', b.dataset.vibe === x));
     try { localStorage.setItem('cat.siteVibe', x); } catch (e) {}
     if (!fromDemo) send({ catalyst: 'set-vibe', vibe: x });
   };
-  $$('#vibes-pick [data-vibe]').forEach((b) => b.addEventListener('click', () => setVibe(b.dataset.vibe)));
-  addEventListener('message', (e) => {
-    if (!demo || e.source !== demo.contentWindow) return; const m = e.data || {};
-    if (m.catalyst === 'ready') { const l = $('.demo-load'); if (l) l.remove(); if (m.vibe !== vibe) send({ catalyst: 'set-vibe', vibe }); if (who) send({ catalyst: 'go', section: WHO[who].go }); }
-    if (m.catalyst === 'vibe') setVibe(m.vibe, true);
-  });
+  $$('#vibe-dots [data-vibe]').forEach((b) => b.addEventListener('click', () => setVibe(b.dataset.vibe)));
   setVibe(vibe, true);
 
-  // What's your PC for?
+  /* What's your PC for? */
   const WHO = {
-    gaming: { h: 'EVERY GAME.<br><b>ONE SCREEN.</b>', lead: 'Steam, Epic, Xbox and Roblox games in one library with cover art and playtime. One click closes the junk running in the background and gives your game the whole PC.', go: 'games', feats: ['GAMES', 'MY PC', 'FLOW'], say: 'The demo jumped to your games. Below, Game Mode, PC Doctor and Flow moved to the top.' },
-    streaming: { h: 'GO LIVE.<br><b>ZERO PANIC.</b>', lead: 'A checklist that checks itself, a privacy shield that hides Discord the second it pops up on stream, and your phone as a Stream Deck.', go: 'stream', feats: ['STREAM', 'PHONE', 'WORKSPACES'], say: 'The demo jumped to Stream. Below, the stream tools and your phone Deck moved to the top.' },
-    school: { h: 'KNOW WHAT’S DUE.<br><b>ACTUALLY DO IT.</b>', lead: 'Your classes and assignments from Google Classroom, Canvas or Outlook on one screen, plus a study lock that keeps games closed until the timer ends.', go: 'school', feats: ['SCHOOL', 'SEARCH', 'WORKSPACES'], say: 'The demo jumped to School. Below, classes, search and study setups moved to the top.' },
-    music: { h: 'YOUR STUDIO.<br><b>ONE CLICK.</b>', lead: 'Open your DAW, plugins and beat folder together, keep bounces where they belong, and get a ping on your phone when an export finishes.', go: 'studio', feats: ['WORKSPACES', 'PHONE', 'FLOW'], say: 'The demo jumped to your Studio. Below, one-click setups and export alerts moved to the top.' }
+    gaming: { go: 'games', feats: ['GAMES', 'MY PC', 'FLOW'], say: 'The demo jumped to Games. Below, Games, PC Doctor and Flow are first.' },
+    streaming: { go: 'stream', feats: ['STREAM', 'PHONE', 'WORKSPACES'], say: 'The demo jumped to Stream. Below, the stream tools and your phone Deck are first.' },
+    school: { go: 'school', feats: ['SCHOOL', 'SEARCH', 'WORKSPACES'], say: 'The demo jumped to School. Below, classes, search and study setups are first.' },
+    music: { go: 'studio', feats: ['WORKSPACES', 'PHONE', 'FLOW'], say: 'The demo jumped to Studio. Below, one-click setups and export alerts are first.' }
   };
-  const home = { h: $('#h1').innerHTML, lead: $('#lead').textContent };
-  const feats = $$('.feat'); const featParent = feats[0] && feats[0].parentNode; const featAnchor = featParent ? feats[0].previousElementSibling : null;
   let who = '';
   const pick = (k) => {
     who = who === k ? '' : k; const w = WHO[who];
     $$('[data-who]').forEach((b) => b.classList.toggle('on', b.dataset.who === who));
-    $('#h1').innerHTML = w ? w.h : home.h; $('#lead').textContent = w ? w.lead : home.lead;
-    $('#who-say').textContent = w ? w.say : 'Pick one and Catalyst shows you the parts that matter to you.';
-    if (featParent) {
-      const order = w ? [...feats].sort((a, b) => { const ra = w.feats.findIndex((t) => a.querySelector('.k').textContent.includes(t)); const rb = w.feats.findIndex((t) => b.querySelector('.k').textContent.includes(t)); return (ra < 0 ? 99 : ra) - (rb < 0 ? 99 : rb); }) : feats;
-      let after = featAnchor; order.forEach((f) => { after.after(f); after = f; });
-    }
+    $('#who-say').textContent = w ? w.say : '';
+    $$('.feat').forEach((f) => { const i = w ? w.feats.indexOf(f.dataset.k) : -1; f.style.outline = i >= 0 ? '' : ''; f.classList.toggle('picked', i >= 0); });
+    if (w) { const first = $$('.feat').find((f) => f.dataset.k === w.feats[0]); if (first) setTimeout(() => first.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }), 250); }
     send({ catalyst: 'go', section: w ? w.go : 'home' });
   };
   $$('[data-who]').forEach((b) => b.addEventListener('click', () => pick(b.dataset.who)));
+
+  addEventListener('message', (e) => {
+    if (e.source !== demo.contentWindow) return; const m = e.data || {};
+    if (m.catalyst === 'ready') { const l = $('.frame .load'); if (l) l.remove(); if (m.vibe !== vibe) send({ catalyst: 'set-vibe', vibe }); if (who) send({ catalyst: 'go', section: WHO[who].go }); }
+    if (m.catalyst === 'vibe') setVibe(m.vibe, true);
+  });
+
+  /* reveal things as they come up (they start visible; only below-the-fold items get the entrance) */
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((list) => list.forEach((x) => { if (x.isIntersecting) { x.target.classList.remove('pre'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    $$('.rv').forEach((el, i) => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('pre'); el.style.transitionDelay = (i % 4) * 0.06 + 's'; io.observe(el); } });
+    $$('.zone-tag .sw').forEach((s) => { s.style.transform = 'scaleX(0)'; s.style.transition = 'transform 1.2s cubic-bezier(.7,0,.2,1)'; new IntersectionObserver((l, o) => l.forEach((x) => { if (x.isIntersecting) { s.style.transform = 'scaleX(1)'; o.disconnect(); } })).observe(s); });
+  }
 })();
 </script>
 </body>
